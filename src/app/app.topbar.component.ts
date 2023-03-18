@@ -18,7 +18,7 @@ export class AppTopBarComponent {
         if(this.toolsService != undefined ){
             console.log({entroPermisos:this.toolsService});
 
-            this.usuario = this.toolsService.user_perfil['us_nombre'];
+            this.usuario = this.toolsService.user_perfil['nombre'];
         }
         this.items = [
             {label: 'Cerrar sesión', icon: 'pi pi-sign-out'}

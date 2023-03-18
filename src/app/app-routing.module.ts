@@ -3,12 +3,9 @@ import { NgModule } from '@angular/core';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AppMainComponent } from './app.main.component';
 import { LoginComponent } from '@components/login/login.component';
-import { UsuariosComponent } from '@components/usuarios/usuarios.component';
-import { LlamadasComponent } from '@components/llamadas/llamadas.component';
-import { OperadoresComponent } from '@components/operadores/operadores.component';
 import { RolesModulosGuard } from './guards/roles-modulos.guard';
-import { ClientesComponent } from '@components/clientes/clientes.component';
 import { CampaniasComponent } from '@components/campanias/campanias.component';
+import { FoliosComponent } from '@components/folios/folios.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -23,52 +20,15 @@ import { CampaniasComponent } from '@components/campanias/campanias.component';
                         },
                         canActivate: [RolesModulosGuard]
                     },
-                     //new moduls
                     {
-                        path: 'usuarios',
-                        component: UsuariosComponent,
+                        path: 'folios',
+                        component: FoliosComponent,
                         data: {
-                            section: 'Usuarios',
-                            page: 'Listado de Usuarios'
+                            section: 'Folios',
+                            page: 'Listado de Folios'
                         },
                         canActivate: [RolesModulosGuard]
-                    },
-                    {
-                        path: 'llamadas',
-                        component: LlamadasComponent,
-                        data: {
-                            section: 'Llamadas',
-                            page: 'Listado de Llamadas'
-                        },
-                        canActivate: [RolesModulosGuard]
-                    },
-                    {
-                        path: 'clientes',
-                        component: ClientesComponent,
-                        data: {
-                            section: 'Clientes',
-                            page: 'Listado de Clientes'
-                        },
-                        canActivate: [RolesModulosGuard]
-                    },
-                    {
-                        path: 'campanias',
-                        component: CampaniasComponent,
-                        data: {
-                            section: 'Campañas',
-                            page: 'Listado de Campañas'
-                        },
-                        canActivate: [RolesModulosGuard]
-                    },
-                    {
-                        path: 'operadores',
-                        component: OperadoresComponent,
-                        data: {
-                            section: 'Operadores',
-                            page: 'Listado de Operadores'
-                        },
-                        canActivate: [RolesModulosGuard]
-                    },
+                    }
                 ],
             },
             {path: '**', redirectTo: 'pages/notfound'},

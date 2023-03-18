@@ -1,0 +1,107 @@
+<p-toast></p-toast>
+<app-spinner></app-spinner>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <!-- data exported to excel -->
+            <p-table
+                #dt
+                [value]="folios"
+                responsiveLayout="scroll"
+                [globalFilterFields]="['name', 'mac']"
+                [rows]="10"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10, 20, 30, 50, 100]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="numeracion"
+                styleClass="p-datatable-sm"
+            >
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5>Lista de Folios</h5>
+                    <div class="grid fluid mt-auto">
+                        <div class="md:col-2 m-auto">
+                            <button pButton icon="pi pi-plus" styleClass="p-button-sm" class="p-button-success p-button-sm" (click)="dialogAddUpFolio([], false)"  pTooltip="Agregar Folio" tooltipPosition="bottom"></button>
+                        </div>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Buscar..." class="w-100" />
+                    </span>
+                </div>
+            </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="text-sm">
+                        <th pSortableColumn="id">No<p-sortIcon field="id"></p-sortIcon></th>
+                        <th>Nombre</th>
+                        <th>Mac</th>
+                        <th>Estado</th>
+                        <th>Fraccionamiento</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-folio >
+                    <tr class="text-sm" >
+                        <td style="width:5%; min-width:5rem;">
+                            {{ folio.id }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ folio.name }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            {{ folio.mac }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ folio.estado.name }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ folio.fraccionamiento.name }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <div class="flex align-items-center justify-content-center">
+                                <button *appRolesPermisosHtml="'update'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="dialogAddUpFolio(folio, true)" pTooltip="Modificar"></button>
+                                <button *appRolesPermisosHtml="'delete'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"  pTooltip="Eliminar"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+            <!-------------------------------------------------------- AGREGAR O ACTUALIZAR UN FOLIO  ---------------------------------------------->
+            <p-dialog [(visible)]="dialogFolio" [style]="{width: '500px'}"  [closable]="false" [modal]="true" class="p-fluid">
+                <p-header>
+                    <i class="pi font-bold mr-2" [ngClass]="'pi-plus'"></i>
+                    <span>{{banAddUp ? 'Actualizar' : 'Agregar' }} Folio</span>
+                </p-header>
+                <ng-template pTemplate="content">
+                    <div class="p-fluid p-formgrid grid font-bold">
+                        <div class="field col-12">
+                            <label>Estado</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Estado"
+                            >
+                            </p-dropdown>
+                        </div>
+                        <div class="field col-12">
+                            <label>Fraccionamiento</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Fraccionamiento"
+                            >
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <button pButton label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-sm" (click)="clearAndClouse()"></button>
+                    <button pButton label="Guardar" icon="pi pi-plus" class="p-button-primary p-button-sm" ></button>
+                </ng-template>
+            </p-dialog>
+            <!-- ------------------------- FIN DE DIALOG PARA AGREGAR O ACTUALIZAR FOLIO --------------------------------  -->
+        </div>
+    </div>
+</div>

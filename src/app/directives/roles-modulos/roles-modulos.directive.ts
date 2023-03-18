@@ -15,7 +15,6 @@ export class RolesModulosDirective {
     ) {}
     @Input()
     set appRolesModulos(val: string){
-      console.log('*****', val);
       this.permisos = val;
       this.viewContainerRef.createEmbeddedView(this.templateRef);
       this.updateView();
@@ -30,16 +29,12 @@ export class RolesModulosDirective {
         if(this.permisos == 'dashboard'){
             return true;
         }else{
-            console.log(this.toolsService.user_permisions);
             let json = new Array();
             for (let index = 0; index < this.toolsService.user_permisions['modulos'].length; index++) {
                 const element = this.toolsService.user_permisions['modulos'][index];
                 json.push(element);
             }
-            console.log({json_: json});
             this.scopes = json;
-            console.log({scopes_nodulos: this.scopes});
-            console.log(this.scopes.includes(this.permisos));
             if(this.scopes.includes(this.permisos)){
                 return true;
             }else{

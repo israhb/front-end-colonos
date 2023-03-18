@@ -7,6 +7,7 @@ import { ToolsService } from 'app/service/tools/tools.service';
 export class RolesPermisosHtmlDirective {
 
     permisos: string;
+    scopes: any[];
 
     constructor(
         private templateRef: TemplateRef<any>,
@@ -27,12 +28,12 @@ export class RolesPermisosHtmlDirective {
     }
     private checkPermisos(){
         let json = new Array();
-        for (let index = 0; index < this.toolsService.user_permisions.length; index++) {
-            const element = this.toolsService.user_permisions[index];
-            json.push(element.us_permisos);
+        for (let index = 0; index < this.toolsService.user_permisions['actions'].length; index++) {
+            const element = this.toolsService.user_permisions['actions'][index];
+            json.push(element);
         }
-        let arrayPermisos = JSON.stringify(JSON.parse(json[0]));
-        if(arrayPermisos.includes(this.permisos)){
+        this.scopes = json;
+        if(this.scopes.includes(this.permisos)){
             return true;
         }else{
             return false;

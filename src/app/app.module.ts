@@ -120,14 +120,11 @@ import { RutasPaginasComponent } from './components/rutas-paginas/rutas-paginas.
 import { SpinnerComponent } from './shared/spinner/spinner/spinner.component';
 import { SharedModule } from '@shared/shared.module';
 import { LoginComponent } from './components/login/login.component';
-import { UsuariosComponent } from './components/usuarios/usuarios.component';
-import { LlamadasComponent } from './components/llamadas/llamadas.component';
-import { OperadoresComponent } from './components/operadores/operadores.component';
 import { RolesModulosDirective } from './directives/roles-modulos/roles-modulos.directive';
 import { RolesPermisosDirective } from './directives/roles-permisos/roles-permisos.directive';
 import { RolesPermisosHtmlDirective } from './directives/roles-permisos-html/roles-permisos-html.directive';
-import { ClientesComponent } from './components/clientes/clientes.component';
 import { CampaniasComponent } from './components/campanias/campanias.component';
+import { FoliosComponent } from './components/folios/folios.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -241,14 +238,11 @@ import { CampaniasComponent } from './components/campanias/campanias.component';
         RutasPaginasComponent,
         SpinnerComponent,
         LoginComponent,
-        UsuariosComponent,
-        LlamadasComponent,
-        OperadoresComponent,
         RolesModulosDirective,
         RolesPermisosDirective,
         RolesPermisosHtmlDirective,
-        ClientesComponent,
-        CampaniasComponent
+        CampaniasComponent,
+        FoliosComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
