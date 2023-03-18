@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Folios } from 'app/api/folios';
+import { Folios } from 'app/api/Folios';
 import { MessageService} from 'primeng/api';
 import { SFolioService } from 'app/service/s-folio/s-folio.service';
 

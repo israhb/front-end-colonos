@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { Folios } from 'app/api/folios';
+import { Folios } from 'app/api/Folios';
 
 @Injectable({
   providedIn: 'root'
