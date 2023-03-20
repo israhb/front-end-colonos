@@ -63,7 +63,7 @@
                         <td style="width:14%; min-width:10rem;">
                             <div class="flex align-items-center justify-content-center">
                                 <button *appRolesPermisosHtml="'update'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="dialogAddUpFolio(folio, true)" pTooltip="Modificar"></button>
-                                <button *appRolesPermisosHtml="'delete'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"  pTooltip="Eliminar"></button>
+                                <button *appRolesPermisosHtml="'delete'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="dialogDelete(folio)" pTooltip="Eliminar" ></button>
                             </div>
                         </td>
                     </tr>
@@ -77,31 +77,90 @@
                     <span>{{banAddUp ? 'Actualizar' : 'Agregar' }} Folio</span>
                 </p-header>
                 <ng-template pTemplate="content">
+                    <div *ngIf="saveError">
+                        <p-message severity="error" text="Hubo un Error al Guardar" styleClass="mr-2"></p-message>
+                    </div>
                     <div class="p-fluid p-formgrid grid font-bold">
                         <div class="field col-12">
                             <label>Estado</label>
                             <p-dropdown
                                 appendTo="body"
                                 placeholder="Selecciona Estado"
-                            >
-                            </p-dropdown>
+                                [options]="estado_options"
+                                optionLabel="name"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="name"
+                                [(ngModel)]="estado_id"
+                                (onChange)="selectEstado(estado_id)"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !estado_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !estado_id">Campo requerido.</small>
                         </div>
                         <div class="field col-12">
                             <label>Fraccionamiento</label>
                             <p-dropdown
                                 appendTo="body"
                                 placeholder="Selecciona Fraccionamiento"
-                            >
-                            </p-dropdown>
+                                [options]="fraccionamiento_options"
+                                optionLabel="name"
+                                optionValue="id"
+                                [disabled]="fraccionamiento_options ? false : true"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="name"
+                                [(ngModel)]="fraccionamiento_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !fraccionamiento_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !fraccionamiento_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Nombre</label>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Ingrese nombre"
+                                [(ngModel)]="nombre"
+                                class="p-inputtext-sm"
+                                onKeyPress="if(this.value.length==20) return false;"
+                                required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !nombre}"
+                            />
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nombre">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Mac</label>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Ingrese mac"
+                                class="p-inputtext-sm"
+                                onKeyPress="if(this.value.length==50) return false;"
+                                [(ngModel)]="mac"
+                            />
                         </div>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <button pButton label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-sm" (click)="clearAndClouse()"></button>
-                    <button pButton label="Guardar" icon="pi pi-plus" class="p-button-primary p-button-sm" ></button>
+                    <button pButton label="Guardar" icon="pi pi-plus" class="p-button-primary p-button-sm" (click)="saveDataFolio()" ></button>
                 </ng-template>
             </p-dialog>
             <!-- ------------------------- FIN DE DIALOG PARA AGREGAR O ACTUALIZAR FOLIO --------------------------------  -->
+            <!-- -------------------------- ELIMINAR FOLIO SIN RELACION --------------------------------------------------- -->
+            <p-dialog [(visible)]="dialogDeleteFolio" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+                <div class="flex align-items-center justify-content-center">
+                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                    <span *ngIf="folio">¿Desea eliminar al folio {{folio.name}}?</span><br>
+                </div>
+                <ng-template pTemplate="footer">
+                    <button pButton icon="pi pi-times" class="p-button-danger p-button-sm" label="No" (click)="clearAndClouse()"></button>
+                    <button pButton icon="pi pi-check" class="p-button-primary p-button-sm" label="Sí" (click)="deleteFolio()"></button>
+                </ng-template>
+            </p-dialog>
         </div>
     </div>
 </div>
