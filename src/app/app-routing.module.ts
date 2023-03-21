@@ -9,6 +9,7 @@ import { EstadosComponent } from '@components/estados/estados.component';
 import { FraccionamientosComponent } from '@components/fraccionamientos/fraccionamientos.component';
 import { TipoComunicadoComponent } from '@components/tipo-comunicado/tipo-comunicado.component';
 import { TipoNegocioComponent } from '@components/tipo-negocio/tipo-negocio.component';
+import { TipoPagoComponent } from '@components/tipo-pago/tipo-pago.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -65,6 +66,15 @@ import { TipoNegocioComponent } from '@components/tipo-negocio/tipo-negocio.comp
                         data: {
                             section: 'TipoNegocio',
                             page: 'Listado de Tipos de Negocio'
+                        },
+                        canActivate: [RolesModulosGuard]
+                    },
+                    {
+                        path: 'tipoPago',
+                        component: TipoPagoComponent,
+                        data: {
+                            section: 'TipoPago',
+                            page: 'Listado de Tipos de Pago'
                         },
                         canActivate: [RolesModulosGuard]
                     }
