@@ -123,8 +123,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RolesModulosDirective } from './directives/roles-modulos/roles-modulos.directive';
 import { RolesPermisosDirective } from './directives/roles-permisos/roles-permisos.directive';
 import { RolesPermisosHtmlDirective } from './directives/roles-permisos-html/roles-permisos-html.directive';
-import { CampaniasComponent } from './components/campanias/campanias.component';
 import { FoliosComponent } from './components/folios/folios.component';
+import { EstadosComponent } from './components/estados/estados.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -241,8 +241,8 @@ import { FoliosComponent } from './components/folios/folios.component';
         RolesModulosDirective,
         RolesPermisosDirective,
         RolesPermisosHtmlDirective,
-        CampaniasComponent,
-        FoliosComponent
+        FoliosComponent,
+        EstadosComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

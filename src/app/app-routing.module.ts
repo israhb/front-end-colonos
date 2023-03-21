@@ -4,8 +4,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AppMainComponent } from './app.main.component';
 import { LoginComponent } from '@components/login/login.component';
 import { RolesModulosGuard } from './guards/roles-modulos.guard';
-import { CampaniasComponent } from '@components/campanias/campanias.component';
 import { FoliosComponent } from '@components/folios/folios.component';
+import { EstadosComponent } from '@components/estados/estados.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -26,6 +26,15 @@ import { FoliosComponent } from '@components/folios/folios.component';
                         data: {
                             section: 'Folios',
                             page: 'Listado de Folios'
+                        },
+                        canActivate: [RolesModulosGuard]
+                    },
+                    {
+                        path: 'estados',
+                        component: EstadosComponent,
+                        data: {
+                            section: 'Estados',
+                            page: 'Listado de Estados'
                         },
                         canActivate: [RolesModulosGuard]
                     }

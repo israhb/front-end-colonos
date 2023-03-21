@@ -22,4 +22,19 @@ export class SEstadoService {
         const requestOptions = { headers: this.headers_post };
         return this.http.get<Estado[]>(`${environment.baseUrl}estado`, requestOptions);
     }
+
+    saveEstado(json: JSON){
+        const requestOptions = { headers: this.headers_post };
+        return this.http.post(`${environment.baseUrl}estado`, json, requestOptions);
+    }
+
+    updateEstado(folio_id: number, json: JSON){
+        const requestOptions = { headers: this.headers_post };
+        return this.http.patch(`${environment.baseUrl}estado/${folio_id}`, json, requestOptions);
+    }
+
+    deleteEstadoS(folio_id: number){
+        const requestOptions = { headers: this.headers_post };
+        return this.http.delete(`${environment.baseUrl}estado/${folio_id}`, requestOptions);
+    }
 }

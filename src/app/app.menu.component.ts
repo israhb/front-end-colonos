@@ -36,7 +36,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Admin',
                 items: [
                     {label: 'Folios', icon: 'pi pi-fw pi-user-edit', routerLink: ['/home/folios'], rol: 'folios'},
-                    {label: 'Estados', icon: 'pi pi-fw pi-phone', routerLink: ['/home'], rol: 'estados'},
+                    {label: 'Estados', icon: 'pi pi-fw pi-phone', routerLink: ['/home/estados'], rol: 'estados'},
                     {label: 'Fraccionamientos', icon: 'pi pi-fw pi-users', routerLink: ['/home'], rol: 'fraccionamientos'},
                     {label: 'Niveles', icon: 'pi pi-fw pi-users', routerLink: ['/home'], rol: 'niveles'},
                     {label: 'Monedas', icon: 'pi pi-fw pi-user', routerLink: ['/home'], rol: 'monedas'},
