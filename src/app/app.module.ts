@@ -129,6 +129,7 @@ import { FraccionamientosComponent } from './components/fraccionamientos/fraccio
 import { TipoComunicadoComponent } from './components/tipo-comunicado/tipo-comunicado.component';
 import { TipoNegocioComponent } from './components/tipo-negocio/tipo-negocio.component';
 import { TipoPagoComponent } from './components/tipo-pago/tipo-pago.component';
+import { TipoServicioComponent } from './components/tipo-servicio/tipo-servicio.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -250,7 +251,8 @@ import { TipoPagoComponent } from './components/tipo-pago/tipo-pago.component';
         FraccionamientosComponent,
         TipoComunicadoComponent,
         TipoNegocioComponent,
-        TipoPagoComponent
+        TipoPagoComponent,
+        TipoServicioComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

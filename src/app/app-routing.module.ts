@@ -10,6 +10,7 @@ import { FraccionamientosComponent } from '@components/fraccionamientos/fraccion
 import { TipoComunicadoComponent } from '@components/tipo-comunicado/tipo-comunicado.component';
 import { TipoNegocioComponent } from '@components/tipo-negocio/tipo-negocio.component';
 import { TipoPagoComponent } from '@components/tipo-pago/tipo-pago.component';
+import { TipoServicioComponent } from '@components/tipo-servicio/tipo-servicio.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -75,6 +76,15 @@ import { TipoPagoComponent } from '@components/tipo-pago/tipo-pago.component';
                         data: {
                             section: 'TipoPago',
                             page: 'Listado de Tipos de Pago'
+                        },
+                        canActivate: [RolesModulosGuard]
+                    },
+                    {
+                        path: 'tipoServicio',
+                        component: TipoServicioComponent,
+                        data: {
+                            section: 'TipoServicio',
+                            page: 'Listado de Tipos de Servicio'
                         },
                         canActivate: [RolesModulosGuard]
                     }
