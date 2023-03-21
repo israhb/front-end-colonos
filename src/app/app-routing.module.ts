@@ -7,6 +7,7 @@ import { RolesModulosGuard } from './guards/roles-modulos.guard';
 import { FoliosComponent } from '@components/folios/folios.component';
 import { EstadosComponent } from '@components/estados/estados.component';
 import { FraccionamientosComponent } from '@components/fraccionamientos/fraccionamientos.component';
+import { TipoComunicadoComponent } from '@components/tipo-comunicado/tipo-comunicado.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -45,6 +46,15 @@ import { FraccionamientosComponent } from '@components/fraccionamientos/fraccion
                         data: {
                             section: 'Fraccionamiento',
                             page: 'Listado de Fraccionamientos'
+                        },
+                        canActivate: [RolesModulosGuard]
+                    },
+                    {
+                        path: 'tipoComunicado',
+                        component: TipoComunicadoComponent,
+                        data: {
+                            section: 'TipoComunicado',
+                            page: 'Listado de Tipos de Comunicado'
                         },
                         canActivate: [RolesModulosGuard]
                     }

@@ -1,74 +1,62 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService} from 'primeng/api';
-import { SEstadoService } from 'app/service/s-estado/s-estado.service';
-import { SFraccionamientoService } from 'app/service/s-fraccionamiento/s-fraccionamiento.service';
 import { ToolsService } from 'app/service/tools/tools.service';
-import { Fraccionamiento } from 'app/api/Fraccionamiento';
-
+import { TipoComunicado } from 'app/api/TipoComunicado';
+import { STipoComunicadoService } from 'app/service/s-tipoComunicado/s-tipo-comunicado.service';
 
 @Component({
-  selector: 'app-fraccionamientos',
-  templateUrl: './fraccionamientos.component.html',
+  selector: 'app-tipo-comunicado',
+  templateUrl: './tipo-comunicado.component.html',
   providers: [MessageService],
-  styleUrls: ['./fraccionamientos.component.scss']
+  styleUrls: ['./tipo-comunicado.component.scss']
 })
-export class FraccionamientosComponent implements OnInit {
-    fraccionamiento: Fraccionamiento;
-    fraccionamientos: Fraccionamiento[];
-    selectedFraccionamientos: Fraccionamiento[];
+export class TipoComunicadoComponent implements OnInit {
+
+    tComunicado: TipoComunicado;
+    tComunicados: TipoComunicado[];
+    selectedTComunicados: TipoComunicado[];
     /************* banderas *****************/
     banAddUp: boolean = false;
     submitted: boolean = false;
     saveError: boolean = false;
     /************* modales ***************** */
-    dialogFrac: boolean = false;
-    dialogDeleteFrac: boolean = false;
+    dialogEstado: boolean = false;
+    dialogDeleteEstado: boolean = false;
     /****************** fomulario folios ******************** */
     nombre: string;
-    estado_id: number; estado_options: any[];
 
     constructor(
         private messageService: MessageService,
-        private sEstadoService:SEstadoService,
-        private sFraccionamientoService:SFraccionamientoService,
+        private sTipoComunicadoService:STipoComunicadoService,
         private toolsService:ToolsService,
     ) { }
 
     ngOnInit(): void {
         this.refreshTable();
-        this.selectores();
     }
 
     refreshTable(){
-        this.sFraccionamientoService.getListarFraccionamientos().subscribe( (r) => this.fraccionamientos = r);
+        this.sTipoComunicadoService.getListarTipoC().subscribe( (r) => this.tComunicados = r);
     }
 
-    selectores(){
-        if(!this.estado_options){
-            this.sEstadoService.getListarEstados().subscribe(r => this.estado_options = r );
-        }
-    }
-
-    dialogAddUpFrac(fraccionamiento: Fraccionamiento, bandera: boolean){
+    dialogAddUpEstado(tComunicado: TipoComunicado, bandera: boolean){
         this.banAddUp = bandera;
-        this.selectores();
         if(bandera){//update
-            this.fraccionamiento = {...fraccionamiento};
-            this.estado_id = this.fraccionamiento.estado_id;
-            this.nombre = this.fraccionamiento.name;
+            this.tComunicado = {...tComunicado};
+            this.nombre = this.tComunicado.name;
         }else{//create
-            this.fraccionamiento = {};
+            this.tComunicado = {};
         }
-        this.dialogFrac = true;
+        this.dialogEstado = true;
     }
 
-    dialogDelete(fraccionamiento: Fraccionamiento){
-        this.fraccionamiento = {...fraccionamiento};
-        this.dialogDeleteFrac = true;
+    dialogDelete(tComunicado: TipoComunicado){
+        this.tComunicado = {...tComunicado};
+        this.dialogDeleteEstado = true;
     }
 
-    deleteFrac(){
-        this.sFraccionamientoService.deleteFraccionamientoS(this.fraccionamiento.id).subscribe({
+    deleteEstado(){
+        this.sTipoComunicadoService.deleteTipoCS(this.tComunicado.id).subscribe({
             next: (v) =>{
                 if(v != null ){
                     this.messageService.add({severity: 'success', summary: 'Completado', detail: 'Eliminado Exitosamente!', life: 5000});
@@ -83,15 +71,14 @@ export class FraccionamientosComponent implements OnInit {
         });
     }
 
-    saveDataFolio(){
+    saveDataEstado(){
         this.submitted = true;
-        if(this.estado_id && this.nombre ){
+        if( this.nombre ){
             if(this.banAddUp){//update
                 let json = {
-                    name: this.nombre,
-                    estado_id: this.estado_id
+                    name: this.nombre
                 }
-                this.sFraccionamientoService.updateFraccionamiento(this.fraccionamiento.id, JSON.parse(JSON.stringify(json))).subscribe({
+                this.sTipoComunicadoService.updateTipoC(this.tComunicado.id, JSON.parse(JSON.stringify(json))).subscribe({
                     next: (v) =>{
                         if(v != null ){
                             this.messageService.add({severity: 'success', summary: 'Completado', detail: 'Guardado Exitosamente!', life: 5000});
@@ -109,10 +96,9 @@ export class FraccionamientosComponent implements OnInit {
                 });
             }else{//create
                 let json = {
-                    name: this.nombre,
-                    estado_id: this.estado_id
+                    name: this.nombre
                 }
-                this.sFraccionamientoService.saveFraccionamiento(JSON.parse(JSON.stringify(json))).subscribe({
+                this.sTipoComunicadoService.saveTipoC(JSON.parse(JSON.stringify(json))).subscribe({
                     next: (v) =>{
                         if(v != null ){
                             this.messageService.add({severity: 'success', summary: 'Completado', detail: 'Guardado Exitosamente!', life: 5000});
@@ -133,13 +119,12 @@ export class FraccionamientosComponent implements OnInit {
     }
 
     clearAndClouse(){
-        this.dialogFrac = false;
+        this.dialogEstado = false;
         this.submitted = false;
-        this.dialogDeleteFrac = false;
-        this.fraccionamiento = {};
+        this.dialogDeleteEstado = false;
+        this.tComunicado = {};
         //clear inputs form
         this.nombre = null;
-        this.estado_id = null;
     }
 
 }

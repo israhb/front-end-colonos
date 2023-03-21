@@ -126,6 +126,7 @@ import { RolesPermisosHtmlDirective } from './directives/roles-permisos-html/rol
 import { FoliosComponent } from './components/folios/folios.component';
 import { EstadosComponent } from './components/estados/estados.component';
 import { FraccionamientosComponent } from './components/fraccionamientos/fraccionamientos.component';
+import { TipoComunicadoComponent } from './components/tipo-comunicado/tipo-comunicado.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -244,7 +245,8 @@ import { FraccionamientosComponent } from './components/fraccionamientos/fraccio
         RolesPermisosHtmlDirective,
         FoliosComponent,
         EstadosComponent,
-        FraccionamientosComponent
+        FraccionamientosComponent,
+        TipoComunicadoComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
