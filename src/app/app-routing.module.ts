@@ -6,6 +6,7 @@ import { LoginComponent } from '@components/login/login.component';
 import { RolesModulosGuard } from './guards/roles-modulos.guard';
 import { FoliosComponent } from '@components/folios/folios.component';
 import { EstadosComponent } from '@components/estados/estados.component';
+import { FraccionamientosComponent } from '@components/fraccionamientos/fraccionamientos.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -35,6 +36,15 @@ import { EstadosComponent } from '@components/estados/estados.component';
                         data: {
                             section: 'Estados',
                             page: 'Listado de Estados'
+                        },
+                        canActivate: [RolesModulosGuard]
+                    },
+                    {
+                        path: 'fraccionamiento',
+                        component: FraccionamientosComponent,
+                        data: {
+                            section: 'Fraccionamiento',
+                            page: 'Listado de Fraccionamientos'
                         },
                         canActivate: [RolesModulosGuard]
                     }

@@ -28,13 +28,13 @@ export class SEstadoService {
         return this.http.post(`${environment.baseUrl}estado`, json, requestOptions);
     }
 
-    updateEstado(folio_id: number, json: JSON){
+    updateEstado(estado_id: number, json: JSON){
         const requestOptions = { headers: this.headers_post };
-        return this.http.patch(`${environment.baseUrl}estado/${folio_id}`, json, requestOptions);
+        return this.http.patch(`${environment.baseUrl}estado/${estado_id}`, json, requestOptions);
     }
 
-    deleteEstadoS(folio_id: number){
+    deleteEstadoS(estado_id: number){
         const requestOptions = { headers: this.headers_post };
-        return this.http.delete(`${environment.baseUrl}estado/${folio_id}`, requestOptions);
+        return this.http.delete(`${environment.baseUrl}estado/${estado_id}`, requestOptions);
     }
 }
