@@ -41,7 +41,7 @@ export class AppMenuComponent implements OnInit {
                     // {label: 'Niveles', icon: 'pi pi-fw pi-users', routerLink: ['/home'], rol: 'niveles'},
                     // {label: 'Monedas', icon: 'pi pi-fw pi-user', routerLink: ['/home'], rol: 'monedas'},
                     {label: 'Tipos de Comunicado', icon: 'pi pi-fw pi-user-edit', routerLink: ['/home/tipoComunicado'], rol: 'tipo_comunicado'},
-                    {label: 'Tipos de Negocio', icon: 'pi pi-fw pi-phone', routerLink: ['/home'], rol: 'tipo_negocio'},
+                    {label: 'Tipos de Negocio', icon: 'pi pi-fw pi-phone', routerLink: ['/home/tipoNegocio'], rol: 'tipo_negocio'},
                     {label: 'Tipos de Pago', icon: 'pi pi-fw pi-users', routerLink: ['/home'], rol: 'tipo_pago'},
                     {label: 'Tipos de Servicio', icon: 'pi pi-fw pi-users', routerLink: ['/home'], rol: 'tipo_servicio'},
                     {label: 'Tipos de Transporte', icon: 'pi pi-fw pi-user', routerLink: ['/home'], rol: 'tipo_transporte'},

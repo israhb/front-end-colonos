@@ -127,6 +127,7 @@ import { FoliosComponent } from './components/folios/folios.component';
 import { EstadosComponent } from './components/estados/estados.component';
 import { FraccionamientosComponent } from './components/fraccionamientos/fraccionamientos.component';
 import { TipoComunicadoComponent } from './components/tipo-comunicado/tipo-comunicado.component';
+import { TipoNegocioComponent } from './components/tipo-negocio/tipo-negocio.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -246,7 +247,8 @@ import { TipoComunicadoComponent } from './components/tipo-comunicado/tipo-comun
         FoliosComponent,
         EstadosComponent,
         FraccionamientosComponent,
-        TipoComunicadoComponent
+        TipoComunicadoComponent,
+        TipoNegocioComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

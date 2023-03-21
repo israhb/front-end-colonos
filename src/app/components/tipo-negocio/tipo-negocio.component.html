@@ -6,9 +6,9 @@
             <!-- data exported to excel -->
             <p-table
                 #dt
-                [value]="fraccionamientos"
+                [value]="tNegocios"
                 responsiveLayout="scroll"
-                [globalFilterFields]="['name', 'mac']"
+                [globalFilterFields]="['name']"
                 [rows]="10"
                 [paginator]="true"
                 [rowsPerPageOptions]="[10, 20, 30, 50, 100]"
@@ -21,10 +21,10 @@
             >
             <ng-template pTemplate="caption">
                 <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                    <h5>Lista de Fraccionamientos</h5>
+                    <h5>Lista de Tipos de Negocios</h5>
                     <div class="grid fluid mt-auto">
                         <div class="md:col-2 m-auto">
-                            <button pButton icon="pi pi-plus" styleClass="p-button-sm" class="p-button-success p-button-sm" (click)="dialogAddUpFrac([], false)"  pTooltip="Agregar Fraccionamiento" tooltipPosition="bottom"></button>
+                            <button pButton icon="pi pi-plus" styleClass="p-button-sm" class="p-button-success p-button-sm" (click)="dialogAddUpTNegocio([], false)"  pTooltip="Agregar Tipo Negocio" tooltipPosition="bottom"></button>
                         </div>
                     </div>
                     <span class="p-input-icon-left">
@@ -36,26 +36,22 @@
                 <ng-template pTemplate="header">
                     <tr class="text-sm">
                         <th pSortableColumn="id">No<p-sortIcon field="id"></p-sortIcon></th>
-                        <th>Nombre Fraccionamiento</th>
-                        <th>Estado</th>
+                        <th>Nombre</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-fraccionamiento >
+                <ng-template pTemplate="body" let-tNegocio >
                     <tr class="text-sm" >
                         <td style="width:5%; min-width:5rem;">
-                            {{ fraccionamiento.id }}
+                            {{ tNegocio.id }}
                         </td>
                         <td style="width:24%; min-width:10rem;">
-                            {{ fraccionamiento.name }}
-                        </td>
-                        <td style="width:24%; min-width:10rem;">
-                            {{ fraccionamiento.estado.name }}
+                            {{ tNegocio.name }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <div class="flex align-items-center justify-content-center">
-                                <button *appRolesPermisosHtml="'update'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="dialogAddUpFrac(fraccionamiento, true)" pTooltip="Modificar"></button>
-                                <button *appRolesPermisosHtml="'delete'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="dialogDelete(fraccionamiento)" pTooltip="Eliminar" ></button>
+                                <button *appRolesPermisosHtml="'update'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="dialogAddUpTNegocio(tNegocio, true)" pTooltip="Modificar"></button>
+                                <button *appRolesPermisosHtml="'delete'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="dialogDelete(tNegocio)" pTooltip="Eliminar" ></button>
                             </div>
                         </td>
                     </tr>
@@ -63,33 +59,16 @@
             </p-table>
 
             <!-------------------------------------------------------- AGREGAR O ACTUALIZAR UN FOLIO  ---------------------------------------------->
-            <p-dialog [(visible)]="dialogFrac" [style]="{width: '500px'}"  [closable]="false" [modal]="true" class="p-fluid">
+            <p-dialog [(visible)]="dialogTNegocio" [style]="{width: '500px'}"  [closable]="false" [modal]="true" class="p-fluid">
                 <p-header>
                     <i class="pi font-bold mr-2" [ngClass]="'pi-plus'"></i>
-                    <span>{{banAddUp ? 'Actualizar' : 'Agregar' }} Fraccionamiento</span>
+                    <span>{{banAddUp ? 'Actualizar' : 'Agregar' }} Tipo de Negocio</span>
                 </p-header>
                 <ng-template pTemplate="content">
                     <div *ngIf="saveError">
                         <p-message severity="error" text="Hubo un Error al Guardar" styleClass="mr-2"></p-message>
                     </div>
                     <div class="p-fluid p-formgrid grid font-bold">
-                        <div class="field col-12">
-                            <label>Estado</label>
-                            <p-dropdown
-                                appendTo="body"
-                                placeholder="Selecciona Estado"
-                                [options]="estado_options"
-                                optionLabel="name"
-                                optionValue="id"
-                                required autofocus
-                                [filter]="true"
-                                filterBy="name"
-                                [(ngModel)]="estado_id"
-                                class="p-inputtext-sm"
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !estado_id}"
-                            ></p-dropdown>
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !estado_id">Campo requerido.</small>
-                        </div>
                         <div class="field col-12">
                             <label>Nombre</label>
                             <input
@@ -98,7 +77,7 @@
                                 placeholder="Ingrese nombre"
                                 [(ngModel)]="nombre"
                                 class="p-inputtext-sm"
-                                onKeyPress="if(this.value.length==50) return false;"
+                                onKeyPress="if(this.value.length==20) return false;"
                                 required autofocus
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !nombre}"
                             />
@@ -108,19 +87,19 @@
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <button pButton label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-sm" (click)="clearAndClouse()"></button>
-                    <button pButton label="Guardar" icon="pi pi-plus" class="p-button-primary p-button-sm" (click)="saveDataFolio()" ></button>
+                    <button pButton label="Guardar" icon="pi pi-plus" class="p-button-primary p-button-sm" (click)="saveDataTNegocio()" ></button>
                 </ng-template>
             </p-dialog>
             <!-- ------------------------- FIN DE DIALOG PARA AGREGAR O ACTUALIZAR FOLIO --------------------------------  -->
             <!-- -------------------------- ELIMINAR FOLIO SIN RELACION --------------------------------------------------- -->
-            <p-dialog [(visible)]="dialogDeleteFrac" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <p-dialog [(visible)]="dialogDeleteTNegocio" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
                 <div class="flex align-items-center justify-content-center">
                     <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                    <span *ngIf="fraccionamiento">¿Desea eliminar al Fraccionamiento {{fraccionamiento.name}}?</span><br>
+                    <span *ngIf="tNegocio">¿Desea eliminar a {{tNegocio.name}}?</span><br>
                 </div>
                 <ng-template pTemplate="footer">
                     <button pButton icon="pi pi-times" class="p-button-danger p-button-sm" label="No" (click)="clearAndClouse()"></button>
-                    <button pButton icon="pi pi-check" class="p-button-primary p-button-sm" label="Sí" (click)="deleteFrac()"></button>
+                    <button pButton icon="pi pi-check" class="p-button-primary p-button-sm" label="Sí" (click)="deleteTNegocio()"></button>
                 </ng-template>
             </p-dialog>
         </div>
