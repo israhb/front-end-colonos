@@ -130,6 +130,7 @@ import { TipoComunicadoComponent } from './components/tipo-comunicado/tipo-comun
 import { TipoNegocioComponent } from './components/tipo-negocio/tipo-negocio.component';
 import { TipoPagoComponent } from './components/tipo-pago/tipo-pago.component';
 import { TipoServicioComponent } from './components/tipo-servicio/tipo-servicio.component';
+import { TipoTransporteComponent } from './components/tipo-transporte/tipo-transporte.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -252,7 +253,8 @@ import { TipoServicioComponent } from './components/tipo-servicio/tipo-servicio.
         TipoComunicadoComponent,
         TipoNegocioComponent,
         TipoPagoComponent,
-        TipoServicioComponent
+        TipoServicioComponent,
+        TipoTransporteComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
