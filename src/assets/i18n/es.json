@@ -35,7 +35,7 @@
         "dayNamesMin": ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
         "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
         "monthNamesShort": ["Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-        "dateFormat": "dd-mm-yy",
+        "dateFormat": "yy-mm-dd",
         "firstDayOfWeek": 0,
         "today": "Hoy",
         "weekHeader": "Sem",

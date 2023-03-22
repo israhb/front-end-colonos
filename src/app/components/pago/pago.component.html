@@ -1,0 +1,188 @@
+<p-toast></p-toast>
+<app-spinner></app-spinner>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <!-- data exported to excel -->
+            <p-table
+                #dt
+                [value]="pagos"
+                responsiveLayout="scroll"
+                [globalFilterFields]="['name', 'mac']"
+                [rows]="10"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10, 20, 30, 50, 100]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="numeracion"
+                styleClass="p-datatable-sm"
+            >
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5>Lista de Pagos</h5>
+                    <div class="grid fluid mt-auto">
+                        <div class="md:col-2 m-auto">
+                            <button pButton icon="pi pi-plus" styleClass="p-button-sm" class="p-button-success p-button-sm" (click)="dialogAddUpPago([], false)"  pTooltip="Agregar Pago" tooltipPosition="bottom"></button>
+                        </div>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Buscar..." class="w-100" />
+                    </span>
+                </div>
+            </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="text-sm">
+                        <th pSortableColumn="id">No<p-sortIcon field="id"></p-sortIcon></th>
+                        <th>Concepto</th>
+                        <th>Tipo Pago</th>
+                        <th>Colono</th>
+                        <th>Monto</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pago >
+                    <tr class="text-sm" >
+                        <td style="width:5%; min-width:5rem;">
+                            {{ pago.id }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ pago.name }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            {{ pago.tipoPago.name }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ pago.colono.nombre }} / {{pago.colono.apellido_paterno}} {{pago.colono.apellido_materno}}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ pago.monto }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ pago.upload_date }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ pago.upload_time }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <div class="flex align-items-center justify-content-center">
+                                <button *appRolesPermisosHtml="'update'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="dialogAddUpPago(pago, true)" pTooltip="Modificar"></button>
+                                <button *appRolesPermisosHtml="'delete'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="dialogDelete(pago)" pTooltip="Eliminar" ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+            <!-------------------------------------------------------- AGREGAR O ACTUALIZAR UN FOLIO  ---------------------------------------------->
+            <p-dialog [(visible)]="dialogPago" [style]="{width: '500px'}"  [closable]="false" [modal]="true" class="p-fluid">
+                <p-header>
+                    <i class="pi font-bold mr-2" [ngClass]="'pi-plus'"></i>
+                    <span>{{banAddUp ? 'Actualizar' : 'Agregar' }} Pago</span>
+                </p-header>
+                <ng-template pTemplate="content">
+                    <div *ngIf="saveError">
+                        <p-message severity="error" text="Hubo un Error al Guardar" styleClass="mr-2"></p-message>
+                    </div>
+                    <div class="p-fluid p-formgrid grid font-bold">
+                        <div class="field col-12">
+                            <label>Colono</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Colono"
+                                [options]="colono_options"
+                                optionLabel="nombre"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="nombre"
+                                [(ngModel)]="colono_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !colono_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !colono_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12">
+                            <label>Tipo de Pago</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Tipo de Pago"
+                                [options]="tPago_options"
+                                optionLabel="name"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="name"
+                                [(ngModel)]="tPago_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !tPago_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !tPago_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Concepto</label>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Ingrese concepto"
+                                [(ngModel)]="nombre"
+                                class="p-inputtext-sm"
+                                onKeyPress="if(this.value.length==50) return false;"
+                                required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !nombre}"
+                            />
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nombre">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Monto</label>
+                            <p-inputNumber
+                                [(ngModel)]="monto"
+                                inputId="currency-us"
+                                class="p-inputtext-sm"
+                                onKeyPress="if(this.value.length==5) return false;"
+                                required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !monto}"
+                                mode="currency" currency="USD" locale="en-US">
+                            </p-inputNumber>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !monto">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12">
+                            <label>Fecha</label>
+                            <p-calendar
+                                appendTo="body" [panelStyle]="{'width':'25%'}"
+                                [showIcon]="true"
+                                [showButtonBar]="true"
+                                placeholder="Fecha Desde"
+                                class="p-inputtext-sm"
+                                [(ngModel)]="fecha"
+                                required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !fecha}"
+                            ></p-calendar>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !fecha">Campo requerido.</small>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <button pButton label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-sm" (click)="clearAndClouse()"></button>
+                    <button pButton label="Guardar" icon="pi pi-plus" class="p-button-primary p-button-sm" (click)="saveDataPago()" ></button>
+                </ng-template>
+            </p-dialog>
+            <!-- ------------------------- FIN DE DIALOG PARA AGREGAR O ACTUALIZAR FOLIO --------------------------------  -->
+            <!-- -------------------------- ELIMINAR FOLIO SIN RELACION --------------------------------------------------- -->
+            <p-dialog [(visible)]="dialogDeletePago" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+                <div class="flex align-items-center justify-content-center">
+                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                    <span *ngIf="pago">¿Desea eliminar el Pago {{pago.name}}?</span><br>
+                </div>
+                <ng-template pTemplate="footer">
+                    <button pButton icon="pi pi-times" class="p-button-danger p-button-sm" label="No" (click)="clearAndClouse()"></button>
+                    <button pButton icon="pi pi-check" class="p-button-primary p-button-sm" label="Sí" (click)="deletePago()"></button>
+                </ng-template>
+            </p-dialog>
+        </div>
+    </div>
+</div>

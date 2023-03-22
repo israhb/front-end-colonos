@@ -32,4 +32,23 @@ export class ToolsService {
         let hours = u.getHours() < 10 ? '0'+u.getHours() : u.getHours();
         return `${hours}:${minutes}:00`;
     }
+     //funcion para acomodar formato de fechas
+     formatDateInputs(dates: string, banderaCreateUpdate: boolean, modDayMonYear: boolean){
+        if(!dates){
+            return dates;
+        }else{
+            if (banderaCreateUpdate) {
+                let dividir_fecha = dates.split("-");
+                return dates = `${dividir_fecha[2]}-${dividir_fecha[1]}-${dividir_fecha[0]}`;
+            } else {
+                if (modDayMonYear) {//12-12-2022
+                    var u = new Date(Date.parse(dates));
+                    return `${('0'+u.getUTCDate()).slice(-2)}-${('0'+(u.getUTCMonth()+1) ).slice(-2)}-${u.getUTCFullYear()}`;
+                } else {//2022-12-12
+                    var u = new Date(Date.parse(dates));
+                    return `${u.getUTCFullYear()}-${('0'+(u.getUTCMonth()+1)).slice(-2)}-${('0'+u.getUTCDate()).slice(-2)}`;
+                }
+            }
+        }
+    }
 }
