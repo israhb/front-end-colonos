@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { TipoTransporte } from 'app/api/TipoTransporte';
+import { TipoVisita } from 'app/api/TipoVisita';
 
 @Injectable({
   providedIn: 'root'
 })
-export class STipoTransporteService {
+export class STipoVisitaService {
 
     constructor(private http: HttpClient) { }
 
@@ -18,23 +18,23 @@ export class STipoTransporteService {
         'Content-type': 'application/json'
     });
 
-    getListarTipoTransporte(){
+    getListarTipoVisita(){
         const requestOptions = { headers: this.headers_post };
-        return this.http.get<TipoTransporte[]>(`${environment.baseUrl}tipo-transporte`, requestOptions);
+        return this.http.get<TipoVisita[]>(`${environment.baseUrl}tipo-visita`, requestOptions);
     }
 
-    saveTipoTransporte(json: JSON){
+    saveTipoVisita(json: JSON){
         const requestOptions = { headers: this.headers_post };
-        return this.http.post(`${environment.baseUrl}tipo-transporte`, json, requestOptions);
+        return this.http.post(`${environment.baseUrl}tipo-visita`, json, requestOptions);
     }
 
-    updateTipoTransporte(tipoTransporte_id: number, json: JSON){
+    updateTipoVisita(tipoVisita_id: number, json: JSON){
         const requestOptions = { headers: this.headers_post };
-        return this.http.patch(`${environment.baseUrl}tipo-transporte/${tipoTransporte_id}`, json, requestOptions);
+        return this.http.patch(`${environment.baseUrl}tipo-visita/${tipoVisita_id}`, json, requestOptions);
     }
 
-    deleteTipoTransporte(tipoTransporte_id: number){
+    deleteTipoVisita(tipoVisita_id: number){
         const requestOptions = { headers: this.headers_post };
-        return this.http.delete(`${environment.baseUrl}tipo-transporte/${tipoTransporte_id}`, requestOptions);
+        return this.http.delete(`${environment.baseUrl}tipo-visita/${tipoVisita_id}`, requestOptions);
     }
 }
