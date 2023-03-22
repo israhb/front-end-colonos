@@ -14,6 +14,7 @@ import { TipoServicioComponent } from '@components/tipo-servicio/tipo-servicio.c
 import { TipoTransporteComponent } from '@components/tipo-transporte/tipo-transporte.component';
 import { TipoVisitaComponent } from '@components/tipo-visita/tipo-visita.component';
 import { PagoComponent } from '@components/pago/pago.component';
+import { ComunicadoComponent } from '@components/comunicado/comunicado.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -115,6 +116,15 @@ import { PagoComponent } from '@components/pago/pago.component';
                         data: {
                             section: 'Pagos',
                             page: 'Listado de Pagos'
+                        },
+                        canActivate: [RolesModulosGuard]
+                    },
+                    {
+                        path: 'comunicados',
+                        component: ComunicadoComponent,
+                        data: {
+                            section: 'Comunicados',
+                            page: 'Listado de Comunicados'
                         },
                         canActivate: [RolesModulosGuard]
                     }
