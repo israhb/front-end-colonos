@@ -134,6 +134,7 @@ import { TipoTransporteComponent } from './components/tipo-transporte/tipo-trans
 import { TipoVisitaComponent } from './components/tipo-visita/tipo-visita.component';
 import { PagoComponent } from './components/pago/pago.component';
 import { ComunicadoComponent } from './components/comunicado/comunicado.component';
+import { NegociosComponent } from './components/negocios/negocios.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -260,7 +261,8 @@ import { ComunicadoComponent } from './components/comunicado/comunicado.componen
         TipoTransporteComponent,
         TipoVisitaComponent,
         PagoComponent,
-        ComunicadoComponent
+        ComunicadoComponent,
+        NegociosComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

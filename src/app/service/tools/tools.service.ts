@@ -51,4 +51,16 @@ export class ToolsService {
             }
         }
     }
+    cleanFormatPhone(phone: string){
+        if(phone != '' && phone != undefined){
+          phone = phone.split(" ").join("");
+          phone = phone.replace("-","");
+          phone = phone.replace(")","");
+          phone = phone.replace("(","");
+          phone = phone.split(" ").join("");
+          return phone;
+        }else{
+          return phone;
+        }
+    }
 }

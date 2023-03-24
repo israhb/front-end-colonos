@@ -1,0 +1,220 @@
+<p-toast></p-toast>
+<app-spinner></app-spinner>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <!-- data exported to excel -->
+            <p-table
+                #dt
+                [value]="negocios"
+                responsiveLayout="scroll"
+                [globalFilterFields]="['name', 'mac']"
+                [rows]="10"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10, 20, 30, 50, 100]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="numeracion"
+                styleClass="p-datatable-sm"
+            >
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5>Lista de Negocios</h5>
+                    <div class="grid fluid mt-auto">
+                        <div class="md:col-2 m-auto">
+                            <button pButton icon="pi pi-plus" styleClass="p-button-sm" class="p-button-success p-button-sm" (click)="dialogAddUp([], false)"  pTooltip="Agregar Negocio" tooltipPosition="bottom"></button>
+                        </div>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Buscar..." class="w-100" />
+                    </span>
+                </div>
+            </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="text-sm">
+                        <th pSortableColumn="id">No<p-sortIcon field="id"></p-sortIcon></th>
+                        <th>Nombre Negocio</th>
+                        <th>Tipo Negocio</th>
+                        <th>Dueño</th>
+                        <th>Telefono 1</th>
+                        <th>Telefono 2</th>
+                        <th>Direccion</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-negocio >
+                    <tr class="text-sm" >
+                        <td style="width:5%; min-width:5rem;">
+                            {{ negocio.id }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ negocio.name }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            {{ negocio.tipoNegocio.name }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ negocio.colono.nombre }} / {{negocio.colono.apellido_paterno}} {{negocio.colono.apellido_materno}}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ negocio.telefono_1 }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ negocio.telefono_2 }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ negocio.direccion }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <div class="flex align-items-center justify-content-center">
+                                <button *appRolesPermisosHtml="'update'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="dialogAddUp(negocio, true)" pTooltip="Modificar"></button>
+                                <button *appRolesPermisosHtml="'delete'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="dialogDelete(negocio)" pTooltip="Eliminar" ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+            <!-------------------------------------------------------- AGREGAR O ACTUALIZAR UN FOLIO  ---------------------------------------------->
+            <p-dialog [(visible)]="dialogAddUPdate" [style]="{width: '500px'}"  [closable]="false" [modal]="true" class="p-fluid">
+                <p-header>
+                    <i class="pi font-bold mr-2" [ngClass]="'pi-plus'"></i>
+                    <span>{{banAddUp ? 'Actualizar' : 'Agregar' }} Negocio</span>
+                </p-header>
+                <ng-template pTemplate="content">
+                    <div *ngIf="saveError">
+                        <p-message severity="error" text="Hubo un Error al Guardar" styleClass="mr-2"></p-message>
+                    </div>
+                    <div class="p-fluid p-formgrid grid font-bold">
+                        <div class="field col-12">
+                            <label>Tipo de Negocio</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Tipo de Negocio"
+                                [options]="tNegocioptions"
+                                optionLabel="name"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="name"
+                                [(ngModel)]="tNegocio_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !tNegocio_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !tNegocio_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12">
+                            <label>Colono</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Colono"
+                                [options]="colono_options"
+                                optionLabel="nombre"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="nombre"
+                                [(ngModel)]="colono_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !colono_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !colono_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12">
+                            <label>Nombre Negocio</label>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Ingrese nombre"
+                                [(ngModel)]="nombre_negocio"
+                                class="p-inputtext-sm"
+                                onKeyPress="if(this.value.length==50) return false;"
+                                required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !nombre_negocio}"
+                            />
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nombre_negocio">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12">
+                            <label>Direccion del Negocio</label>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Ingrese direccion"
+                                [(ngModel)]="direccion"
+                                class="p-inputtext-sm"
+                                onKeyPress="if(this.value.length==50) return false;"
+                                required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !direccion}"
+                            />
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !direccion">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Telefono 1</label>
+                            <p-inputMask
+                                mask="(999) 999-9999"  class="p-inputtext-sm"
+                                [(ngModel)]="telefono_1" placeholder="(999) 999-9999"
+                                required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !telefono_1}"
+                            ></p-inputMask>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !telefono_1">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Telefono 2</label>
+                            <p-inputMask
+                                mask="(999) 999-9999"  class="p-inputtext-sm"
+                                [(ngModel)]="telefono_2" placeholder="(999) 999-9999"
+                            ></p-inputMask>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Subir foto 1</label>
+                            <p-fileUpload mode="basic" chooseLabel="Foto 1" name="demo[]"
+                                accept="image/*"
+                                maxFileSize="1000000" (onUpload)="onUpload($event)"
+                            ></p-fileUpload>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Subir foto 2</label>
+                            <p-fileUpload mode="basic" chooseLabel="Foto 2" name="demo[]"
+                                accept="image/*"
+                                maxFileSize="1000000" (onUpload)="onUpload($event)"
+                            ></p-fileUpload>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Subir foto 3</label>
+                            <p-fileUpload mode="basic" chooseLabel="Foto 3" name="demo[]"
+                                accept="image/*"
+                                maxFileSize="1000000" (onUpload)="onUpload($event)"
+                            ></p-fileUpload>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Subir foto 4</label>
+                            <p-fileUpload mode="basic" chooseLabel="Foto 4" name="demo[]"
+                                 accept="image/*"
+                                maxFileSize="1000000" (onUpload)="onUpload($event)"
+                            ></p-fileUpload>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <button pButton label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-sm" (click)="clearAndClouse()"></button>
+                    <button pButton label="Guardar" icon="pi pi-plus" class="p-button-primary p-button-sm" (click)="saveData()" ></button>
+                </ng-template>
+            </p-dialog>
+            <!-- ------------------------- FIN DE DIALOG PARA AGREGAR O ACTUALIZAR FOLIO --------------------------------  -->
+            <!-- -------------------------- ELIMINAR FOLIO SIN RELACION --------------------------------------------------- -->
+            <p-dialog [(visible)]="dialogDeleteForm" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+                <div class="flex align-items-center justify-content-center">
+                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                    <span *ngIf="negocio">¿Desea eliminar a {{negocio.name}}?</span><br>
+                </div>
+                <ng-template pTemplate="footer">
+                    <button pButton icon="pi pi-times" class="p-button-danger p-button-sm" label="No" (click)="clearAndClouse()"></button>
+                    <button pButton icon="pi pi-check" class="p-button-primary p-button-sm" label="Sí" (click)="deleteAction()"></button>
+                </ng-template>
+            </p-dialog>
+        </div>
+    </div>
+</div>
