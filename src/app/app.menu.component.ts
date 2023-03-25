@@ -51,7 +51,7 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Administración Colonos',
                 items: [
-                    {label: 'Colonos', icon: 'pi pi-fw pi-user-edit', routerLink: ['/home'], rol: 'colonos'},
+                    {label: 'Colonos', icon: 'pi pi-fw pi-user-edit', routerLink: ['/home/colonos'], rol: 'colonos'},
                     {label: 'Visitas', icon: 'pi pi-fw pi-phone', routerLink: ['/home'], rol: 'visitas'},
                     {label: 'Negocios', icon: 'pi pi-fw pi-users', routerLink: ['/home/negocios'], rol: 'negocios'},
                     {label: 'Comunicados', icon: 'pi pi-fw pi-users', routerLink: ['/home/comunicados'], rol: 'comunicados'},

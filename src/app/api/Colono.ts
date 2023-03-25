@@ -1,3 +1,5 @@
+import { Folios } from "./Folios";
+
 export interface Colono{
     id?: number;
     folio_id?: number;
@@ -23,4 +25,6 @@ export interface Colono{
     upload_date?: string;
     upload_time?: string;
     activo?: number;
+    folio?: Folios;
+
 }
