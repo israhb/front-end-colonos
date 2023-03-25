@@ -1,0 +1,269 @@
+<p-toast></p-toast>
+<app-spinner></app-spinner>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <!-- data exported to excel -->
+            <p-table
+                #dt
+                [value]="visitas"
+                responsiveLayout="scroll"
+                [globalFilterFields]="['name']"
+                [rows]="10"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10, 20, 30, 50, 100]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="numeracion"
+                styleClass="p-datatable-sm"
+            >
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5>Lista de Visitas</h5>
+                    <div class="grid fluid mt-auto">
+                        <div class="md:col-2 m-auto">
+                            <button pButton icon="pi pi-plus" styleClass="p-button-sm" class="p-button-success p-button-sm" (click)="dialogAddUpVisita([], false)"  pTooltip="Agregar Visita" tooltipPosition="bottom"></button>
+                        </div>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Buscar..." class="w-100" />
+                    </span>
+                </div>
+            </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="text-sm">
+                        <th pSortableColumn="id">No<p-sortIcon field="id"></p-sortIcon></th>
+                        <th>Colono</th>
+                        <th>Tipo de Visita</th>
+                        <th>Tipo de Servicio</th>
+                        <th>Tipo de Transporte</th>
+                        <th>Concepto</th>
+                        <th>Fecha de Visita</th>
+                        <th>Hora de Visita</th>
+                        <th>Fecha de Creacion</th>
+                        <th>Hora de Creacion</th>
+                        <th>Numero de Acompañantes</th>
+                        <th>¿Es Evento o Fiesta?</th>
+                        <th>Placas</th>
+                        <th>Comentarios</th>
+                        <th>GPS</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-visita >
+                    <tr class="text-sm" >
+                        <td style="width:5%; min-width:5rem;">
+                            {{ visita.id }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.colono.nombre }} / {{visita.colono.apellido_paterno}} {{visita.colono.apellido_materno}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            {{ visita.tipoVisita.name }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.tipoServicio.name }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.tipoTransporte.name }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.name }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.visita_date }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.visita_time }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.upload_date }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.upload_time }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.numero_acom }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.evento == 0 ? 'No' : 'Si' }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.placas }}
+                        </td>
+                        <td style="width:35%; min-width:10rem;">
+                            {{ visita.nota }}
+                        </td>
+                        <td style="width:24%; min-width:10rem;">
+                            {{ visita.gps }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <div class="flex align-items-center justify-content-center">
+                                <button *appRolesPermisosHtml="'update'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="dialogAddUpVisita(visita, true)" pTooltip="Modificar"></button>
+                                <button *appRolesPermisosHtml="'delete'" [style]="{height:'25px', width:'25px'}" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="dialogDelete(visita)" pTooltip="Eliminar" ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+            <!-------------------------------------------------------- AGREGAR O ACTUALIZAR UN FOLIO  ---------------------------------------------->
+            <p-dialog [(visible)]="dialogVisita" [style]="{width: '500px'}"  [closable]="false" [modal]="true" class="p-fluid">
+                <p-header>
+                    <i class="pi font-bold mr-2" [ngClass]="'pi-plus'"></i>
+                    <span>{{banAddUp ? 'Actualizar' : 'Agregar' }} Visita</span>
+                </p-header>
+                <ng-template pTemplate="content">
+                    <div *ngIf="saveError">
+                        <p-message severity="error" text="Hubo un Error al Guardar" styleClass="mr-2"></p-message>
+                    </div>
+                    <div class="p-fluid p-formgrid grid font-bold">
+                        <div class="field col-12">
+                            <label>Colono</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Colono"
+                                [options]="colono_options"
+                                optionLabel="nombre"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="nombre"
+                                [(ngModel)]="colono_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !colono_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !colono_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Tipo de Visita</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Tipo de Visita"
+                                [options]="tVisita_options"
+                                optionLabel="name"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="name"
+                                [(ngModel)]="tVisita_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !tVisita_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !tVisita_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Tipo de Servicio</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Tipo de Servicio"
+                                [options]="tServicio_options"
+                                optionLabel="name"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="name"
+                                [(ngModel)]="tServicio_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !tServicio_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !tServicio_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12">
+                            <label>Tipo de Transporte</label>
+                            <p-dropdown
+                                appendTo="body"
+                                placeholder="Selecciona Tipo de Transporte"
+                                [options]="tTransporte_options"
+                                optionLabel="name"
+                                optionValue="id"
+                                required autofocus
+                                [filter]="true"
+                                filterBy="name"
+                                [(ngModel)]="tTransporte_id"
+                                class="p-inputtext-sm"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !tTransporte_id}"
+                            ></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !tTransporte_id">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Concepto</label>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Ingrese concepto"
+                                [(ngModel)]="nombre"
+                                class="p-inputtext-sm"
+                                onKeyPress="if(this.value.length==50) return false;"
+                                required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !nombre}"
+                            />
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nombre">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Fecha y Hora de la Visita</label>
+                            <p-calendar
+                                appendTo="body" [panelStyle]="{'width':'25%'}"
+                                [showIcon]="true"
+                                [showButtonBar]="true"
+                                placeholder="Fecha Desde"
+                                class="p-inputtext-sm"
+                                [(ngModel)]="fecha_visita"
+                                required autofocus
+                                [showTime]="true"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !fecha_visita}"
+                            ></p-calendar>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !fecha_visita">Campo requerido.</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Numero de Acompañantes</label>
+                            <p-inputNumber
+                                [(ngModel)]="n_acom"
+                                inputId="minmax" inputId="minmax"
+                                mode="decimal" [min]="0" [max]="10"
+                            ></p-inputNumber>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>¿Es un Evento o Fiesta?</label>
+                            <p-checkbox inputId="ny" [(ngModel)]="evento" [binary]="true"></p-checkbox>
+                        </div>
+                        <div class="field col-12">
+                            <label>Placas</label>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Ingrese placas"
+                                [(ngModel)]="placas"
+                                class="p-inputtext-sm"
+                                onKeyPress="if(this.value.length==10) return false;"
+                            />
+                        </div>
+                        <div class="field col-12">
+                            <label>Comentario</label>
+                            <textarea rows="5" cols="30"  class="p-inputtext-sm" pInputTextarea [(ngModel)]="comentario"></textarea>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <button pButton label="Cancelar" icon="pi pi-times" class="p-button-danger p-button-sm" (click)="clearAndClouse()"></button>
+                    <button pButton label="Guardar" icon="pi pi-plus" class="p-button-primary p-button-sm" (click)="saveData()" ></button>
+                </ng-template>
+            </p-dialog>
+            <!-- ------------------------- FIN DE DIALOG PARA AGREGAR O ACTUALIZAR FOLIO --------------------------------  -->
+            <!-- -------------------------- ELIMINAR FOLIO SIN RELACION --------------------------------------------------- -->
+            <p-dialog [(visible)]="dialogDeleteVisita" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+                <div class="flex align-items-center justify-content-center">
+                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                    <span *ngIf="visita">¿Desea eliminar a {{visita.name}}?</span><br>
+                </div>
+                <ng-template pTemplate="footer">
+                    <button pButton icon="pi pi-times" class="p-button-danger p-button-sm" label="No" (click)="clearAndClouse()"></button>
+                    <button pButton icon="pi pi-check" class="p-button-primary p-button-sm" label="Sí" (click)="deleteVisita()"></button>
+                </ng-template>
+            </p-dialog>
+        </div>
+    </div>
+</div>

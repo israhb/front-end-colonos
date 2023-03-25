@@ -1,45 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Colono } from 'app/api/Colono';
+import { ApisGeneralesService } from '../generales/apis-generales.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SColonoService {
 
-    constructor(private http: HttpClient) { }
-
-    headers = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*"
-    });
-    headers_post = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*",
-        'Content-type': 'application/json'
-    });
+    constructor(private http: HttpClient, private apisGeneralesService:ApisGeneralesService) { }
+    requestOptions = { headers: this.apisGeneralesService.headers_post };
 
     getListarColonos(){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.get<Colono[]>(`${environment.baseUrl}colono`, requestOptions);
+        return this.http.get<Colono[]>(`${environment.baseUrl}colono`, this.requestOptions);
     }
 
     getListarNivelColono(){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.get<Colono[]>(`${environment.baseUrl}colono/level-colono`, requestOptions);
+        return this.http.get<Colono[]>(`${environment.baseUrl}colono/level-colono`, this.requestOptions);
     }
 
     saveColono(json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.post(`${environment.baseUrl}colono`, json, requestOptions);
+        return this.http.post(`${environment.baseUrl}colono`, json, this.requestOptions);
     }
 
     updateColono(colono_id: number, json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.patch(`${environment.baseUrl}colono/${colono_id}`, json, requestOptions);
+        return this.http.patch(`${environment.baseUrl}colono/${colono_id}`, json, this.requestOptions);
     }
 
     deleteColono(colono_id: number){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.delete(`${environment.baseUrl}colono/${colono_id}`, requestOptions);
+        return this.http.delete(`${environment.baseUrl}colono/${colono_id}`, this.requestOptions);
     }
 }

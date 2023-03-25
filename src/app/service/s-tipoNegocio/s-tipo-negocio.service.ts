@@ -1,40 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { TipoNegocio } from 'app/api/TipoNegocio';
+import { ApisGeneralesService } from '../generales/apis-generales.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class STipoNegocioService {
 
-    constructor(private http: HttpClient) { }
-
-    headers = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*"
-    });
-    headers_post = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*",
-        'Content-type': 'application/json'
-    });
+    constructor(private http: HttpClient, private apisGeneralesService:ApisGeneralesService) { }
+    requestOptions = { headers: this.apisGeneralesService.headers_post };
 
     getListarTipoN(){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.get<TipoNegocio[]>(`${environment.baseUrl}tipo-negocio`, requestOptions);
+        return this.http.get<TipoNegocio[]>(`${environment.baseUrl}tipo-negocio`, this.requestOptions);
     }
 
     saveTipoN(json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.post(`${environment.baseUrl}tipo-negocio`, json, requestOptions);
+        return this.http.post(`${environment.baseUrl}tipo-negocio`, json, this.requestOptions);
     }
 
     updateTipoN(tipoNegocio_id: number, json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.patch(`${environment.baseUrl}tipo-negocio/${tipoNegocio_id}`, json, requestOptions);
+        return this.http.patch(`${environment.baseUrl}tipo-negocio/${tipoNegocio_id}`, json, this.requestOptions);
     }
 
     deleteTipoNS(tipoNegocio_id: number){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.delete(`${environment.baseUrl}tipo-negocio/${tipoNegocio_id}`, requestOptions);
+        return this.http.delete(`${environment.baseUrl}tipo-negocio/${tipoNegocio_id}`, this.requestOptions);
     }
 }

@@ -1,45 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Fraccionamiento } from 'app/api/Fraccionamiento';
+import { ApisGeneralesService } from '../generales/apis-generales.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SFraccionamientoService {
 
-    constructor(private http: HttpClient) { }
-
-    headers = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*"
-    });
-    headers_post = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*",
-        'Content-type': 'application/json'
-    });
+    constructor(private http: HttpClient, private apisGeneralesService:ApisGeneralesService) { }
+    requestOptions = { headers: this.apisGeneralesService.headers_post };
 
     getListarFraccionamientos(){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.get<Fraccionamiento[]>(`${environment.baseUrl}fraccionamiento`, requestOptions);
+        return this.http.get<Fraccionamiento[]>(`${environment.baseUrl}fraccionamiento`, this.requestOptions);
     }
 
     getLsitadoFraccByIdstado(estado_id: number){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.get<Fraccionamiento[]>(`${environment.baseUrl}fraccionamiento/forEstadoId/${estado_id}`, requestOptions);
+        return this.http.get<Fraccionamiento[]>(`${environment.baseUrl}fraccionamiento/forEstadoId/${estado_id}`, this.requestOptions);
     }
 
     saveFraccionamiento(json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.post(`${environment.baseUrl}fraccionamiento`, json, requestOptions);
+        return this.http.post(`${environment.baseUrl}fraccionamiento`, json, this.requestOptions);
     }
 
     updateFraccionamiento(frac_id: number, json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.patch(`${environment.baseUrl}fraccionamiento/${frac_id}`, json, requestOptions);
+        return this.http.patch(`${environment.baseUrl}fraccionamiento/${frac_id}`, json, this.requestOptions);
     }
 
     deleteFraccionamientoS(frac_id: number){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.delete(`${environment.baseUrl}fraccionamiento/${frac_id}`, requestOptions);
+        return this.http.delete(`${environment.baseUrl}fraccionamiento/${frac_id}`, this.requestOptions);
     }
 }

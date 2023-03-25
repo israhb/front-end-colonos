@@ -11,7 +11,7 @@ import { MegaMenuItem, MenuItem } from 'primeng/api';
 })
 export class RutasPaginasComponent implements OnInit {
 
-  
+
   public page?: string;
   public page2?: string;
   public section?: string;
@@ -25,11 +25,11 @@ export class RutasPaginasComponent implements OnInit {
       this.page = page;
       this.page2 = page2;
       this.section = section;
-      document.title = `SIGMAA - ${page}`;
+      document.title = `Colonos Web - ${page}`;
     });
     this.update$ = this.pushElements().subscribe(({}) => {
 
-    }); 
+    });
   }
 
   ngOnInit(): void {

@@ -9,9 +9,6 @@ export class ApisGeneralesService {
 
     constructor(private http: HttpClient) { }
 
-    headers = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*"
-      });
     headers_post = new HttpHeaders({
         "Access-Control-Allow-Origin": "*",
         'Content-type': 'application/json'

@@ -1,40 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Negocio } from 'app/api/Negocio';
+import { ApisGeneralesService } from '../generales/apis-generales.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SNegocioService {
 
-    constructor(private http: HttpClient) { }
-
-    headers = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*"
-    });
-    headers_post = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*",
-        'Content-type': 'application/json'
-    });
+    constructor(private http: HttpClient, private apisGeneralesService:ApisGeneralesService) { }
+    requestOptions = { headers: this.apisGeneralesService.headers_post };
 
     getListarNegocios(){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.get<Negocio[]>(`${environment.baseUrl}negocio`, requestOptions);
+        return this.http.get<Negocio[]>(`${environment.baseUrl}negocio`, this.requestOptions);
     }
 
     saveNegocio(json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.post(`${environment.baseUrl}negocio`, json, requestOptions);
+        return this.http.post(`${environment.baseUrl}negocio`, json, this.requestOptions);
     }
 
     updateNegocio(negocio_id: number, json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.patch(`${environment.baseUrl}negocio/${negocio_id}`, json, requestOptions);
+        return this.http.patch(`${environment.baseUrl}negocio/${negocio_id}`, json, this.requestOptions);
     }
 
     deleteNegocio(negocio_id: number){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.delete(`${environment.baseUrl}negocio/${negocio_id}`, requestOptions);
+        return this.http.delete(`${environment.baseUrl}negocio/${negocio_id}`, this.requestOptions);
     }
 }

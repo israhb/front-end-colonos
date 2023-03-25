@@ -136,6 +136,7 @@ import { PagoComponent } from './components/pago/pago.component';
 import { ComunicadoComponent } from './components/comunicado/comunicado.component';
 import { NegociosComponent } from './components/negocios/negocios.component';
 import { ColonosComponent } from './components/colonos/colonos.component';
+import { VisitasComponent } from './components/visitas/visitas.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -264,7 +265,8 @@ import { ColonosComponent } from './components/colonos/colonos.component';
         PagoComponent,
         ComunicadoComponent,
         NegociosComponent,
-        ColonosComponent
+        ColonosComponent,
+        VisitasComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

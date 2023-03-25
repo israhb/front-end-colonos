@@ -17,6 +17,7 @@ import { PagoComponent } from '@components/pago/pago.component';
 import { ComunicadoComponent } from '@components/comunicado/comunicado.component';
 import { NegociosComponent } from '@components/negocios/negocios.component';
 import { ColonosComponent } from '@components/colonos/colonos.component';
+import { VisitasComponent } from '@components/visitas/visitas.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -145,6 +146,15 @@ import { ColonosComponent } from '@components/colonos/colonos.component';
                         data: {
                             section: 'Colonos',
                             page: 'Listado de Colonos'
+                        },
+                        canActivate: [RolesModulosGuard]
+                    },
+                    {
+                        path: 'visitas',
+                        component: VisitasComponent,
+                        data: {
+                            section: 'Visitas',
+                            page: 'Listado de Visitas'
                         },
                         canActivate: [RolesModulosGuard]
                     }

@@ -1,40 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Folios } from 'app/api/Folios';
+import { ApisGeneralesService } from '../generales/apis-generales.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SFolioService {
 
-    constructor(private http: HttpClient) { }
-
-    headers = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*"
-    });
-    headers_post = new HttpHeaders({
-        "Access-Control-Allow-Origin": "*",
-        'Content-type': 'application/json'
-    });
+    constructor(private http: HttpClient, private apisGeneralesService:ApisGeneralesService) { }
+    requestOptions = { headers: this.apisGeneralesService.headers_post };
 
     getListarFolios(){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.get<Folios[]>(`${environment.baseUrl}folio`, requestOptions);
+        return this.http.get<Folios[]>(`${environment.baseUrl}folio`, this.requestOptions);
     }
 
     saveFolio(json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.post(`${environment.baseUrl}folio`, json, requestOptions);
+        return this.http.post(`${environment.baseUrl}folio`, json, this.requestOptions);
     }
 
     updateFolio(folio_id: number, json: JSON){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.patch(`${environment.baseUrl}folio/${folio_id}`, json, requestOptions);
+        return this.http.patch(`${environment.baseUrl}folio/${folio_id}`, json, this.requestOptions);
     }
 
     deleteFolioS(folio_id: number){
-        const requestOptions = { headers: this.headers_post };
-        return this.http.delete(`${environment.baseUrl}folio/${folio_id}`, requestOptions);
+        return this.http.delete(`${environment.baseUrl}folio/${folio_id}`, this.requestOptions);
     }
 }
