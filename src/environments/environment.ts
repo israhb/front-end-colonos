@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  //baseUrl: "https://7tuhdm16a5.execute-api.us-west-2.amazonaws.com/cc/",
-  baseUrl: "http://localhost:3100/"
+  //baseUrl: "https://localhost:3000/",
+  baseUrl: "http://64.226.98.4/"
 };
 
 /*
